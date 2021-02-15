@@ -81,24 +81,37 @@ class Solution:
         #     x: Items
         #     y: Number of Orders
         #     title: Most popular items
-        
+        bar_plot.set_title('Most popular items')
+        bar_plot.set_xlabel('Items')
+        bar_plot.set_ylabel('Number of Orders')
         # 5. show the plot. Hint: plt.show(block=True).
-        pass
+        plt.show(block=True)
         
     def scatter_plot_num_items_per_order_price(self) -> None:
         # TODO
         # 1. create a list of prices by removing dollar sign and trailing space.
+        # Done already in 'total_sales()' function
+        
         # 2. groupby the orders and sum it.
+        self.chipo['total_price_of_item'] = self.chipo['item_price'] * self.chipo['quantity']
+        newdf = self.chipo.groupby(['order_id'])[['quantity','total_price_of_item']].sum()
+
         # 3. create a scatter plot:
         #       x: orders' item price
         #       y: orders' quantity
         #       s: 50
         #       c: blue
+
+        scatter_graph = newdf.plot.scatter('total_price_of_item', 'quantity', s=50, c='blue')
+        
         # 4. set the title and labels.
         #       title: Numer of items per order price
         #       x: Order Price
         #       y: Num Items
-        pass
+        scatter_graph.set_title('Numer of items per order price')
+        scatter_graph.set_xlabel('Order Price')
+        scatter_graph.set_ylabel('Num Items')
+        plt.show(block=True)
     
         
 
