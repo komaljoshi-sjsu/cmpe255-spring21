@@ -10,7 +10,6 @@ from sklearn.metrics import r2_score
 
 class Linear_Ref:
     def __init__(self) :
-        print("here")
         self.final_rmse = None
         self.final_r2 = None
         self.final_df_predict = None
@@ -28,7 +27,7 @@ class Linear_Ref:
         self.df_target_test = self.df_target.iloc[self.n_train:].copy()
 
         self.reg = LinearRegression()
-    
+        self.multi_reg = LinearRegression()
     def initPolyRegDegree(self,deg):
         self.poly_lin = LinearRegression()
         self.poly = PolynomialFeatures(degree=deg)
@@ -57,7 +56,7 @@ class Linear_Ref:
 
 
     def plot(self,final_rmse,final_r2,final_df_predict,final_df_test,final_feature_name,reg_type):
-        print('Plotting for '+reg_type)
+        print('\n\n***************Plotting for '+reg_type+'***************')
         print('Most optimum col is: '+final_feature_name)
         print('R-Squared Value is: '+str(final_r2))
         print('RMSE Value is: '+str(final_rmse))
@@ -102,6 +101,37 @@ class Linear_Ref:
         r2 = self.r_sq_score(df_y_predict)
 
         self.plot(rmseVal,r2,y_predict,df_x_test.values,self.final_feature_name,reg_type)
+
+    def multiple_regression(self):
+        print('\n\n***************Plotting for Multiple Refression***************')
+        df_x, df_x_test_temp = self.split_train_test(self.df_data)
+        df_x_cor = df_x.copy()
+        df_x_cor['MEDV'] = self.df_target_train
+        cor = df_x_cor.corr().abs()['MEDV']
+        cor = cor.sort_values(ascending=False)
+        new_cor = cor.drop(labels = ['MEDV']).head(3)
+        
+        df_x = pd.DataFrame()
+        df_x_test = pd.DataFrame()
+        
+        for index, value in new_cor.items():
+            df_x[index] = df_x_cor[index]
+            df_x_test[index] = df_x_test_temp[index]
+        
+        self.multi_reg.fit(df_x,self.df_target_train)
+        
+        df_y_predict = pd.DataFrame(self.multi_reg.predict(df_x_test))
+        
+        rmseVal = self.rmse(df_y_predict)
+        r2 = self.r_sq_score(df_y_predict)
+        ind_var = 4; #p
+        sample_size = len(df_x) #n
+        
+        adjusted_r2 = 1 - ((1-r2**2) * (sample_size - 1)/(sample_size-ind_var-1))
+        print("RMSE: ",rmseVal)
+        print("R2: ",r2)
+        print("Adjusted R2: ",adjusted_r2)
+
 if __name__ == '__main__':
     lr = Linear_Ref()
     lr.start_lin_reg()
@@ -109,4 +139,5 @@ if __name__ == '__main__':
     lr.start_poly_reg('Polynomial Regression - Degree 2')
     lr.initPolyRegDegree(20)
     lr.start_poly_reg('Polynomial Regression - Degree 20')
+    lr.multiple_regression()
 
