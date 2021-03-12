@@ -14,4 +14,8 @@ Bias term is the value we would predict if we did not know anything about the ca
 
 Code is contained in predict-car-price.py
 
-In case you get result with actual value as NAN, execute again as data training is on randomized set
+Used Validation framework and linear_regression() of Baseline solution. Modified Baseline solution a little bit in the sense, only features having top 5 highest correlation are considered for training data.
+
+Result is displayed for both Training Data and Validation Data. Following is the image of results:
+
+![picture](images/lab2_res.png)
