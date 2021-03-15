@@ -19,6 +19,15 @@ X=None
 y=None
 sgd_clf=None
 
+def save_fig(fig_id, tight_layout=True):
+    path = os.path.join(PROJECT_ROOT_DIR, IMAGE_DIR, fig_id + ".png")
+    if os.path.isfile(path):
+        os.remove(path)   # Opt.: os.system("rm "+strFile)
+    print("\n\nSaving figure...", fig_id)
+    if tight_layout:
+        plt.tight_layout()
+    plt.savefig(path, format='png', dpi=300)
+
 def sort_by_target(mnist):
     reorder_index = np.array(sorted([(target, i) for i, target in enumerate(mnist.target)]))[:, 1]
     mnist.data = mnist.data.iloc[reorder_index]
@@ -41,7 +50,7 @@ def random_digit(x,i):
             interpolation="nearest")
     plt.axis("off")
 
-    #save_fig("some_digit_plot")
+    save_fig("fig_"+str(i))
     plt.show()
     return some_digit
 
@@ -63,11 +72,11 @@ def train_predict(some_digit,index):
 
     
     # print prediction result of the given input some_digit
-    sgd_clf = SGDClassifier(max_iter=20,tol=-np.infty)
+    sgd_clf = SGDClassifier(max_iter=5,tol=-np.infty)
     sgd_clf.fit(X_train, y_train_5)
 
     prediction = sgd_clf.predict(some_digit)
-    print(f'\n\nActual digit value = {y.iloc[index]} \n Is this digit 5?  {prediction}')
+    print(f'Actual digit value = {y.iloc[index]} \n Is this digit 5?  {prediction}')
     calculate_cross_val_score(X_train,y_train_5)
     
     return X_train,y_train,y_train_5,X_test, y_test_5, y_test
@@ -79,12 +88,12 @@ def test() :
 
     somedigit = random_digit(X_train,15000)
     prediction = sgd_clf.predict(somedigit)
-    print(f'\n\nActual digit value = {y_train.iloc[15000]} \n Is this digit 5?  {prediction}')
+    print(f'Actual digit value = {y_train.iloc[15000]} \n Is this digit 5?  {prediction}')
     calculate_cross_val_score(X_train,y_train_5)
 
-    somedigit = random_digit(X_train,36500)
+    somedigit = random_digit(X,36500)
     prediction = sgd_clf.predict(somedigit)
-    print(f'\n\nActual digit value = {y_train.iloc[36500]} \n Is this digit 5?  {prediction}')
+    print(f'Actual digit value = {y.iloc[36500]} \n Is this digit 5?  {prediction}')
     calculate_cross_val_score(X_train,y_train_5)
 
 test()

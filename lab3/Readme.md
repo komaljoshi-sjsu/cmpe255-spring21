@@ -18,7 +18,7 @@ We can pass random digits from test set of our data set and verify the claasific
 
 ## Result
 
-The following image shows actual digit value and its corresponding result whether it is 5 or not. Image is not shown in results, however, when running python script, first image will be shown and then its computation will get executed.
+The following image shows actual digit value and its corresponding result whether it is 5 or not. Image is not shown in results, however, when running python script, first image will be shown and then its computation will get executed. All the saved images are put inside /images folder.
 
 ![picture](images/lab3.png)
 
