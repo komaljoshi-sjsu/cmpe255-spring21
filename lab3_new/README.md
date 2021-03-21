@@ -1,4 +1,4 @@
-# Lab 3 - Classification
+# Lab 3 New - Classification
 
 Following three methods are used to improve score and achieve a better confusion matrix than baseline solution.
 
